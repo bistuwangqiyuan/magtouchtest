@@ -1,0 +1,61 @@
+{
+  "name": "magtouchtest",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "接触式三探头磁检测软件 - 专业的工业磁粉检测系统",
+  "author": "AI全栈开发团队",
+  "license": "MIT",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.astro",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx,.astro --fix",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,astro,json,md}\"",
+    "type-check": "astro check",
+    "test": "node tests/run-tests.js",
+    "test:unit": "node tests/unit/run-unit-tests.js",
+    "test:integration": "node tests/integration/run-integration-tests.js",
+    "test:watch": "node tests/run-tests.js --watch",
+    "deploy": "pnpm build && netlify deploy --prod --no-build",
+    "deploy:build": "pnpm build",
+    "deploy:only": "netlify deploy --prod --no-build"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/netlify": "^5.5.3",
+    "@astrojs/react": "^3.6.2",
+    "@supabase/supabase-js": "^2.45.7",
+    "astro": "^4.16.13",
+    "chart.js": "^4.4.8",
+    "jspdf": "^2.5.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zustand": "^4.5.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@typescript-eslint/eslint-plugin": "^8.15.0",
+    "@typescript-eslint/parser": "^8.15.0",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.16.0",
+    "eslint-plugin-astro": "^1.3.1",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "netlify-cli": "^17.37.1",
+    "postcss": "^8.4.49",
+    "prettier": "^3.4.1",
+    "prettier-plugin-astro": "^0.14.1",
+    "tailwindcss": "^3.4.15",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

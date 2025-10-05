@@ -1,0 +1,141 @@
+---
+/**
+ * 主布局组件
+ * 提供全局布局结构：顶部状态栏、左侧功能区、主内容区、右侧操作区
+ */
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = '专业的工业磁粉检测系统' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="keywords" content="磁检测,磁粉检测,无损检测,三探头检测,工业检测" />
+    <meta name="author" content="AI全栈开发团队" />
+    
+    <!-- SEO -->
+    <title>{title} - 磁检测系统</title>
+    <link rel="canonical" href={Astro.url.href} />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="/src/styles/global.css" />
+  </head>
+  <body>
+    <!-- 主容器 -->
+    <div class="min-h-screen flex flex-col bg-bg-primary text-text-primary">
+      <!-- 顶部状态栏 -->
+      <header class="h-20 bg-bg-secondary border-b-2 border-border flex items-center px-6">
+        <div class="flex items-center gap-6 w-full">
+          <!-- Logo和品牌 -->
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-accent-primary rounded flex items-center justify-center text-bg-primary font-bold text-xl">
+              M
+            </div>
+            <div>
+              <h1 class="text-xl font-bold">磁检测系统</h1>
+              <p class="text-xs text-text-secondary">三探头磁粉检测</p>
+            </div>
+          </div>
+          
+          <!-- 状态信息 -->
+          <div class="flex-1 flex items-center justify-center gap-6">
+            <div class="flex items-center gap-2">
+              <span class="status-indicator status-online"></span>
+              <span class="text-sm">探头1: 在线</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="status-indicator status-online"></span>
+              <span class="text-sm">探头2: 在线</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="status-indicator status-online"></span>
+              <span class="text-sm">探头3: 在线</span>
+            </div>
+            <div class="text-sm">
+              <span class="text-text-secondary">增益:</span>
+              <span class="text-accent-primary font-semibold ml-1">45.5 dB</span>
+            </div>
+            <div class="text-sm">
+              <span class="text-text-secondary">频率:</span>
+              <span class="text-accent-primary font-semibold ml-1">5.0 MHz</span>
+            </div>
+          </div>
+          
+          <!-- 用户信息 -->
+          <div class="flex items-center gap-4">
+            <span class="text-sm text-text-secondary">操作员: 李工</span>
+            <button class="btn-secondary btn-sm">设置</button>
+          </div>
+        </div>
+      </header>
+      
+      <!-- 主内容区 -->
+      <main class="flex-1 flex overflow-hidden">
+        <!-- 左侧功能按钮区 -->
+        <aside class="w-24 bg-bg-secondary border-r-2 border-border flex flex-col py-4 gap-2">
+          <button class="btn-primary mx-2 aspect-square flex flex-col items-center justify-center gap-1">
+            <span class="text-2xl">📊</span>
+            <span class="text-xs">DISP</span>
+          </button>
+          <button class="btn-secondary mx-2 aspect-square flex flex-col items-center justify-center gap-1">
+            <span class="text-2xl">🎯</span>
+            <span class="text-xs">主</span>
+          </button>
+          <button class="btn-secondary mx-2 aspect-square flex flex-col items-center justify-center gap-1">
+            <span class="text-2xl">🔲</span>
+            <span class="text-xs">GATE</span>
+          </button>
+          <button class="btn-secondary mx-2 aspect-square flex flex-col items-center justify-center gap-1">
+            <span class="text-2xl">📈</span>
+            <span class="text-xs">VPA</span>
+          </button>
+        </aside>
+        
+        <!-- 中央内容区 -->
+        <div class="flex-1 bg-bg-primary overflow-auto">
+          <slot />
+        </div>
+        
+        <!-- 右侧操作按钮区 -->
+        <aside class="w-24 bg-bg-secondary border-l-2 border-border flex flex-col py-4 gap-2">
+          <button class="btn-secondary mx-2 aspect-square flex flex-col items-center justify-center gap-1">
+            <span class="text-2xl">↩️</span>
+          </button>
+          <button class="btn-primary mx-2 aspect-square flex flex-col items-center justify-center gap-1">
+            <span class="text-xs">SAVE</span>
+          </button>
+          <button class="btn-secondary mx-2 aspect-square flex flex-col items-center justify-center gap-1">
+            <span class="text-xs">MENU</span>
+          </button>
+        </aside>
+      </main>
+      
+      <!-- 底部控制栏 -->
+      <footer class="h-16 bg-bg-secondary border-t-2 border-border flex items-center justify-center px-6 gap-4">
+        <button class="btn-secondary">文件</button>
+        <button class="btn-secondary">工件</button>
+        <button class="btn-secondary">参数</button>
+        <button class="btn-secondary">历史</button>
+        <button class="btn-secondary">报告</button>
+        <div class="flex-1"></div>
+        <button class="btn-primary">开始检测</button>
+        <button class="btn-danger">停止</button>
+      </footer>
+    </div>
+  </body>
+</html>

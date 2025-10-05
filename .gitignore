@@ -1,0 +1,63 @@
+# 依赖
+node_modules/
+.pnp/
+.pnp.js
+
+# 测试
+coverage/
+*.lcov
+
+# 生产构建
+dist/
+build/
+.astro/
+
+# 环境变量
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 调试日志
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Netlify
+.netlify/
+netlify.toml.backup
+
+# Supabase
+supabase/.temp/
+supabase/.branches/
+
+# 临时文件
+*.tmp
+*.temp
+.cache/
+
+# 构建相关
+.vercel/
+.turbo/
+
+# 测试相关
+.test-results/
+playwright-report/
+
+# 日志
+logs/
+*.log
+
+# 其他
+.pnpm-store/

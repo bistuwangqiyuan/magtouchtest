@@ -1,0 +1,220 @@
+---
+/**
+ * 主检测界面
+ * 显示三探头实时波形和检测参数
+ */
+
+import MainLayout from '@/layouts/MainLayout.astro';
+---
+
+<MainLayout title="主检测界面">
+  <div class="h-full flex flex-col p-6">
+    <!-- 波形显示区 -->
+    <div class="flex-1 panel mb-4">
+      <div class="panel-header flex items-center justify-between">
+        <h2>实时波形显示</h2>
+        <div class="flex items-center gap-4">
+          <label class="flex items-center gap-2">
+            <input type="checkbox" class="checkbox" checked />
+            <span class="text-sm">显示网格</span>
+          </label>
+          <label class="flex items-center gap-2">
+            <input type="checkbox" class="checkbox" checked />
+            <span class="text-sm">显示峰值</span>
+          </label>
+          <button class="btn-sm btn-secondary">缩放</button>
+          <button class="btn-sm btn-secondary">重置</button>
+        </div>
+      </div>
+      
+      <!-- Canvas波形显示 -->
+      <div class="h-full min-h-[400px] bg-bg-primary rounded mt-4 relative">
+        <canvas 
+          id="waveform-canvas" 
+          class="w-full h-full"
+          data-probe-count="3"
+        >
+        </canvas>
+        
+        <!-- 临时提示 -->
+        <div class="absolute inset-0 flex items-center justify-center text-text-secondary">
+          <div class="text-center">
+            <div class="text-4xl mb-4">📊</div>
+            <div class="text-lg">波形显示区域</div>
+            <div class="text-sm mt-2">点击"开始检测"启动数据采集</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 探头信息和参数显示区 -->
+    <div class="grid grid-cols-3 gap-4">
+      <!-- 探头1 -->
+      <div class="panel">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="status-indicator status-online"></span>
+          <h3 class="text-lg font-semibold text-accent-primary">探头 1</h3>
+        </div>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between">
+            <span class="text-text-secondary">增益:</span>
+            <span class="font-semibold">45.5 dB</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-text-secondary">频率:</span>
+            <span class="font-semibold">5.0 MHz</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-text-secondary">阈值:</span>
+            <span class="font-semibold">50%</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-text-secondary">最大值:</span>
+            <span class="font-semibold text-accent-success">0.95 V</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 探头2 -->
+      <div class="panel">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="status-indicator status-online"></span>
+          <h3 class="text-lg font-semibold text-accent-primary">探头 2</h3>
+        </div>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between">
+            <span class="text-text-secondary">增益:</span>
+            <span class="font-semibold">45.5 dB</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-text-secondary">频率:</span>
+            <span class="font-semibold">5.0 MHz</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-text-secondary">阈值:</span>
+            <span class="font-semibold">50%</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-text-secondary">最大值:</span>
+            <span class="font-semibold text-accent-success">0.88 V</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 探头3 -->
+      <div class="panel">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="status-indicator status-online"></span>
+          <h3 class="text-lg font-semibold text-accent-primary">探头 3</h3>
+        </div>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between">
+            <span class="text-text-secondary">增益:</span>
+            <span class="font-semibold">45.5 dB</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-text-secondary">频率:</span>
+            <span class="font-semibold">5.0 MHz</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-text-secondary">阈值:</span>
+            <span class="font-semibold">50%</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-text-secondary">最大值:</span>
+            <span class="font-semibold text-accent-success">0.92 V</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<script>
+  // 波形显示初始化
+  document.addEventListener('DOMContentLoaded', () => {
+    const canvas = document.getElementById('waveform-canvas') as HTMLCanvasElement;
+    
+    if (!canvas) return;
+    
+    // 设置Canvas尺寸
+    const resizeCanvas = () => {
+      const parent = canvas.parentElement;
+      if (!parent) return;
+      
+      canvas.width = parent.clientWidth;
+      canvas.height = parent.clientHeight;
+      
+      // 重新绘制
+      drawWaveform();
+    };
+    
+    // 绘制波形示例
+    const drawWaveform = () => {
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      
+      const width = canvas.width;
+      const height = canvas.height;
+      
+      // 清空画布
+      ctx.fillStyle = '#1a1a1a';
+      ctx.fillRect(0, 0, width, height);
+      
+      // 绘制网格
+      ctx.strokeStyle = '#2a2a2a';
+      ctx.lineWidth = 1;
+      
+      // 垂直线
+      for (let x = 0; x < width; x += 50) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+      
+      // 水平线
+      for (let y = 0; y < height; y += 50) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+      
+      // 绘制示例波形（3条）
+      const probeColors = ['#ff8c00', '#00ff00', '#00ccff'];
+      const probeCount = 3;
+      
+      for (let i = 0; i < probeCount; i++) {
+        ctx.strokeStyle = probeColors[i];
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        
+        const offset = (i + 1) * height / (probeCount + 1);
+        
+        for (let x = 0; x < width; x++) {
+          const angle = (x / width) * Math.PI * 4;
+          const amplitude = Math.sin(angle + i * 0.5) * 30 + Math.random() * 5;
+          const y = offset + amplitude;
+          
+          if (x === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+        }
+        
+        ctx.stroke();
+        
+        // 绘制探头标签
+        ctx.fillStyle = probeColors[i];
+        ctx.font = '14px system-ui';
+        ctx.fillText(`探头 ${i + 1}`, 10, offset - 40);
+      }
+    };
+    
+    // 初始化
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+  });
+</script>
