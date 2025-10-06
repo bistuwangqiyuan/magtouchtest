@@ -1,0 +1,208 @@
+---
+/**
+ * 工件管理页面
+ */
+
+import MainLayout from '@/layouts/MainLayout.astro';
+---
+
+<MainLayout title="工件管理">
+  <div class="p-6">
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-2xl font-bold">工件管理</h1>
+      <button class="btn-primary" onclick="showAddWorkpieceModal()">+ 新建工件</button>
+    </div>
+    
+    <!-- 工件列表 -->
+    <div class="panel">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>工件编号</th>
+            <th>材质</th>
+            <th>尺寸</th>
+            <th>标准</th>
+            <th>状态</th>
+            <th>创建时间</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="workpiece-list">
+          <tr>
+            <td colspan="7" class="text-center text-text-secondary py-8">
+              加载中...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <!-- 新建工件模态框 -->
+  <div id="add-workpiece-modal" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">新建工件</h2>
+        <button class="modal-close" onclick="hideAddWorkpieceModal()">×</button>
+      </div>
+      <div class="modal-content">
+        <form id="workpiece-form" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium mb-2">工件编号</label>
+            <input type="text" name="workpiece_no" class="input" placeholder="WP-2025-001" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2">材质</label>
+            <input type="text" name="material" class="input" placeholder="316L不锈钢" required />
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-2">长度 (mm)</label>
+              <input type="number" name="length" class="input" placeholder="1000" required />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">宽度 (mm)</label>
+              <input type="number" name="width" class="input" placeholder="500" required />
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-2">厚度 (mm)</label>
+              <input type="number" name="thickness" class="input" placeholder="20" required />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">重量 (kg)</label>
+              <input type="number" name="weight" class="input" step="0.1" placeholder="78.5" required />
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2">检测标准</label>
+            <select name="standard" class="select">
+              <option value="GB/T 15822-2019">GB/T 15822-2019</option>
+              <option value="ASTM E1444-16">ASTM E1444-16</option>
+              <option value="EN ISO 9934-1">EN ISO 9934-1</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2">描述</label>
+            <textarea name="description" class="textarea" placeholder="工件描述"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="hideAddWorkpieceModal()">取消</button>
+        <button class="btn-primary" onclick="submitWorkpiece()">保存</button>
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<script>
+  // 模态框控制
+  (window as any).showAddWorkpieceModal = () => {
+    document.getElementById('add-workpiece-modal')?.classList.remove('hidden');
+  };
+  
+  (window as any).hideAddWorkpieceModal = () => {
+    document.getElementById('add-workpiece-modal')?.classList.add('hidden');
+  };
+  
+  (window as any).submitWorkpiece = async () => {
+    const form = document.getElementById('workpiece-form') as HTMLFormElement;
+    const formData = new FormData(form);
+    
+    const workpiece = {
+      workpiece_no: formData.get('workpiece_no'),
+      material: formData.get('material'),
+      dimensions: {
+        length: parseFloat(formData.get('length') as string),
+        width: parseFloat(formData.get('width') as string),
+        thickness: parseFloat(formData.get('thickness') as string),
+        weight: parseFloat(formData.get('weight') as string),
+        unit: 'mm',
+      },
+      standard: formData.get('standard'),
+      description: formData.get('description'),
+      status: 'pending',
+    };
+    
+    console.log('新建工件:', workpiece);
+    alert('工件已保存！（演示）');
+    (window as any).hideAddWorkpieceModal();
+    form.reset();
+    loadWorkpieces();
+  };
+  
+  // 加载工件列表
+  async function loadWorkpieces() {
+    const tbody = document.getElementById('workpiece-list');
+    if (!tbody) return;
+    
+    // 演示数据
+    const workpieces = [
+      {
+        id: '1',
+        workpiece_no: 'WP-2025-001',
+        material: '316L不锈钢',
+        dimensions: { length: 1000, width: 500, thickness: 20 },
+        standard: 'GB/T 15822-2019',
+        status: 'pending',
+        created_at: '2025-10-05 10:00:00',
+      },
+      {
+        id: '2',
+        workpiece_no: 'WP-2025-002',
+        material: 'Q345钢板',
+        dimensions: { length: 2000, width: 1000, thickness: 30 },
+        standard: 'ASTM E1444-16',
+        status: 'in_progress',
+        created_at: '2025-10-05 11:00:00',
+      },
+      {
+        id: '3',
+        workpiece_no: 'WP-2025-003',
+        material: '铝合金6061',
+        dimensions: { length: 800, width: 400, thickness: 15 },
+        standard: 'EN ISO 9934-1',
+        status: 'completed',
+        created_at: '2025-10-04 09:00:00',
+      },
+    ];
+    
+    tbody.innerHTML = workpieces.map(w => `
+      <tr>
+        <td class="font-semibold text-accent-primary">${w.workpiece_no}</td>
+        <td>${w.material}</td>
+        <td>${w.dimensions.length}×${w.dimensions.width}×${w.dimensions.thickness}mm</td>
+        <td>${w.standard}</td>
+        <td>
+          <span class="badge ${
+            w.status === 'pending' ? 'badge-warning' :
+            w.status === 'in_progress' ? 'badge-primary' :
+            'badge-success'
+          }">
+            ${
+              w.status === 'pending' ? '待检测' :
+              w.status === 'in_progress' ? '检测中' :
+              '已完成'
+            }
+          </span>
+        </td>
+        <td>${w.created_at}</td>
+        <td>
+          <button class="btn-sm btn-secondary mr-2" onclick="selectWorkpiece('${w.id}')">选择</button>
+          <button class="btn-sm btn-secondary">查看</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+  
+  (window as any).selectWorkpiece = (id: string) => {
+    console.log('选择工件:', id);
+    alert('工件已选择，可以开始检测');
+    window.location.href = '/';
+  };
+  
+  // 页面加载时获取数据
+  document.addEventListener('DOMContentLoaded', loadWorkpieces);
+</script>

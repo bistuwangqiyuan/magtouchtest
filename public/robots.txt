@@ -1,0 +1,27 @@
+# robots.txt for 磁检测系统
+
+User-agent: *
+Allow: /
+
+# 禁止访问的目录
+Disallow: /api/
+Disallow: /_astro/
+Disallow: /*.json$
+
+# Sitemap位置
+Sitemap: https://magtouchtest-3578.netlify.app/sitemap.xml
+Sitemap: https://magtouchtest-3578.netlify.app/sitemap-index.xml
+
+# 爬虫速率限制（可选）
+Crawl-delay: 1
+
+# 特定搜索引擎优化
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2

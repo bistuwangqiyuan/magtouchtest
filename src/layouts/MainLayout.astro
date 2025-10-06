@@ -1,47 +1,46 @@
 ---
 /**
  * 主布局组件
- * 提供全局布局结构：顶部状态栏、左侧功能区、主内容区、右侧操作区
+ * 提供全局布局结构
  */
+import SEO from '../components/SEO.astro';
+import '../styles/global.css';
 
 interface Props {
-  title: string;
+  title?: string;
   description?: string;
+  keywords?: string;
+  image?: string;
+  noindex?: boolean;
 }
 
-const { title, description = '专业的工业磁粉检测系统' } = Astro.props;
+const {
+  title = '接触式三探头磁检测软件',
+  description = '专业的工业磁粉检测系统',
+  keywords,
+  image,
+  noindex = false,
+} = Astro.props;
+
+const fullTitle = title.includes('磁检测') ? title : `${title} - 接触式三探头磁检测软件`;
 ---
 
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description} />
-    <meta name="keywords" content="磁检测,磁粉检测,无损检测,三探头检测,工业检测" />
-    <meta name="author" content="AI全栈开发团队" />
-    
-    <!-- SEO -->
-    <title>{title} - 磁检测系统</title>
-    <link rel="canonical" href={Astro.url.href} />
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    
-    <!-- Global Styles -->
-    <link rel="stylesheet" href="/src/styles/global.css" />
+    <SEO
+      title={fullTitle}
+      description={description}
+      keywords={keywords}
+      image={image}
+      noindex={noindex}
+    />
   </head>
-  <body>
-    <!-- 主容器 -->
+  <body itemscope itemtype="https://schema.org/WebApplication">
     <div class="min-h-screen flex flex-col bg-bg-primary text-text-primary">
       <!-- 顶部状态栏 -->
-      <header class="h-20 bg-bg-secondary border-b-2 border-border flex items-center px-6">
+      <header class="h-20 bg-bg-secondary border-b-2 border-border flex items-center px-6" role="banner">
         <div class="flex items-center gap-6 w-full">
-          <!-- Logo和品牌 -->
           <div class="flex items-center gap-3">
             <div class="w-12 h-12 bg-accent-primary rounded flex items-center justify-center text-bg-primary font-bold text-xl">
               M
@@ -52,7 +51,6 @@ const { title, description = '专业的工业磁粉检测系统' } = Astro.props
             </div>
           </div>
           
-          <!-- 状态信息 -->
           <div class="flex-1 flex items-center justify-center gap-6">
             <div class="flex items-center gap-2">
               <span class="status-indicator status-online"></span>
@@ -76,7 +74,6 @@ const { title, description = '专业的工业磁粉检测系统' } = Astro.props
             </div>
           </div>
           
-          <!-- 用户信息 -->
           <div class="flex items-center gap-4">
             <span class="text-sm text-text-secondary">操作员: 李工</span>
             <button class="btn-secondary btn-sm">设置</button>
@@ -85,25 +82,25 @@ const { title, description = '专业的工业磁粉检测系统' } = Astro.props
       </header>
       
       <!-- 主内容区 -->
-      <main class="flex-1 flex overflow-hidden">
+      <main class="flex-1 flex overflow-hidden" role="main" itemprop="mainContentOfPage">
         <!-- 左侧功能按钮区 -->
-        <aside class="w-24 bg-bg-secondary border-r-2 border-border flex flex-col py-4 gap-2">
-          <button class="btn-primary mx-2 aspect-square flex flex-col items-center justify-center gap-1">
+        <aside class="w-24 bg-bg-secondary border-r-2 border-border flex flex-col py-4 gap-2" role="navigation" aria-label="主导航菜单">
+          <a href="/" class="btn-primary mx-2 aspect-square flex flex-col items-center justify-center gap-1">
             <span class="text-2xl">📊</span>
             <span class="text-xs">DISP</span>
-          </button>
-          <button class="btn-secondary mx-2 aspect-square flex flex-col items-center justify-center gap-1">
+          </a>
+          <a href="/workpiece" class="btn-secondary mx-2 aspect-square flex flex-col items-center justify-center gap-1">
             <span class="text-2xl">🎯</span>
-            <span class="text-xs">主</span>
-          </button>
-          <button class="btn-secondary mx-2 aspect-square flex flex-col items-center justify-center gap-1">
-            <span class="text-2xl">🔲</span>
-            <span class="text-xs">GATE</span>
-          </button>
-          <button class="btn-secondary mx-2 aspect-square flex flex-col items-center justify-center gap-1">
-            <span class="text-2xl">📈</span>
-            <span class="text-xs">VPA</span>
-          </button>
+            <span class="text-xs">工件</span>
+          </a>
+          <a href="/parameters" class="btn-secondary mx-2 aspect-square flex flex-col items-center justify-center gap-1">
+            <span class="text-2xl">⚙️</span>
+            <span class="text-xs">参数</span>
+          </a>
+          <a href="/history" class="btn-secondary mx-2 aspect-square flex flex-col items-center justify-center gap-1">
+            <span class="text-2xl">📜</span>
+            <span class="text-xs">历史</span>
+          </a>
         </aside>
         
         <!-- 中央内容区 -->
@@ -116,7 +113,7 @@ const { title, description = '专业的工业磁粉检测系统' } = Astro.props
           <button class="btn-secondary mx-2 aspect-square flex flex-col items-center justify-center gap-1">
             <span class="text-2xl">↩️</span>
           </button>
-          <button class="btn-primary mx-2 aspect-square flex flex-col items-center justify-center gap-1">
+          <button class="btn-primary mx-2 aspect-square flex flex-col items-center justify-center gap-1" onclick="saveRecord()">
             <span class="text-xs">SAVE</span>
           </button>
           <button class="btn-secondary mx-2 aspect-square flex flex-col items-center justify-center gap-1">
@@ -126,16 +123,22 @@ const { title, description = '专业的工业磁粉检测系统' } = Astro.props
       </main>
       
       <!-- 底部控制栏 -->
-      <footer class="h-16 bg-bg-secondary border-t-2 border-border flex items-center justify-center px-6 gap-4">
-        <button class="btn-secondary">文件</button>
-        <button class="btn-secondary">工件</button>
-        <button class="btn-secondary">参数</button>
-        <button class="btn-secondary">历史</button>
-        <button class="btn-secondary">报告</button>
+      <footer class="h-16 bg-bg-secondary border-t-2 border-border flex items-center justify-center px-6 gap-4" role="contentinfo">
+        <a href="/workpiece" class="btn-secondary">工件管理</a>
+        <a href="/parameters" class="btn-secondary">参数配置</a>
+        <a href="/history" class="btn-secondary">历史记录</a>
+        <a href="/reports" class="btn-secondary">报告管理</a>
         <div class="flex-1"></div>
-        <button class="btn-primary">开始检测</button>
-        <button class="btn-danger">停止</button>
+        <button class="btn-primary" data-action="start" onclick="window.startDetection && window.startDetection()">开始检测</button>
+        <button class="btn-danger" data-action="stop" onclick="window.stopDetection && window.stopDetection()">停止</button>
       </footer>
     </div>
+    
+    <script>
+      // 全局函数
+      (window as any).saveRecord = () => {
+        alert('保存功能：将当前检测数据保存到数据库');
+      };
+    </script>
   </body>
 </html>

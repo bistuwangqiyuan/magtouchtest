@@ -96,7 +96,8 @@ body {
   
   /* 文本域 */
   .textarea {
-    @apply input resize-vertical;
+    @apply input;
+    resize: vertical;
     min-height: 100px;
   }
   

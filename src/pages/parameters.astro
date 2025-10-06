@@ -1,0 +1,235 @@
+---
+/**
+ * 参数配置页面
+ */
+
+import MainLayout from '@/layouts/MainLayout.astro';
+---
+
+<MainLayout title="参数配置">
+  <div class="p-6">
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-2xl font-bold">检测参数配置</h1>
+      <div class="flex gap-4">
+        <select class="select" id="template-select" onchange="loadTemplate()">
+          <option value="">选择参数模板</option>
+          <option value="1">不锈钢标准模板</option>
+          <option value="2">Q345钢板模板</option>
+          <option value="3">铝合金模板</option>
+        </select>
+        <button class="btn-secondary" onclick="saveAsTemplate()">保存为模板</button>
+        <button class="btn-primary" onclick="applyParameters()">应用参数</button>
+      </div>
+    </div>
+    
+    <div class="grid grid-cols-2 gap-6">
+      <!-- 探头参数配置 -->
+      <div class="panel">
+        <h2 class="panel-header">探头参数</h2>
+        
+        <!-- 探头1 -->
+        <div class="mb-6">
+          <h3 class="text-lg font-semibold text-accent-primary mb-3">探头 1</h3>
+          <div class="space-y-3">
+            <div>
+              <label class="block text-sm font-medium mb-2">增益 (dB)</label>
+              <input type="range" min="0" max="80" step="0.5" value="45.5" class="w-full" id="probe1-gain" oninput="updateGainValue(1, this.value)" />
+              <div class="text-sm text-text-secondary mt-1">当前值: <span id="probe1-gain-value">45.5</span> dB</div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">频率 (MHz)</label>
+              <input type="number" min="0.5" max="20" step="0.1" value="5.0" class="input" id="probe1-freq" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">滤波器</label>
+              <select class="select" id="probe1-filter">
+                <option value="lowpass">低通</option>
+                <option value="highpass">高通</option>
+                <option value="bandpass" selected>带通</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">阈值 (%)</label>
+              <input type="range" min="0" max="100" value="50" class="w-full" id="probe1-threshold" oninput="updateThresholdValue(1, this.value)" />
+              <div class="text-sm text-text-secondary mt-1">当前值: <span id="probe1-threshold-value">50</span>%</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 探头2 -->
+        <div class="mb-6">
+          <h3 class="text-lg font-semibold text-accent-primary mb-3">探头 2</h3>
+          <div class="space-y-3">
+            <div>
+              <label class="block text-sm font-medium mb-2">增益 (dB)</label>
+              <input type="range" min="0" max="80" step="0.5" value="45.5" class="w-full" id="probe2-gain" oninput="updateGainValue(2, this.value)" />
+              <div class="text-sm text-text-secondary mt-1">当前值: <span id="probe2-gain-value">45.5</span> dB</div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">频率 (MHz)</label>
+              <input type="number" min="0.5" max="20" step="0.1" value="5.0" class="input" id="probe2-freq" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">滤波器</label>
+              <select class="select" id="probe2-filter">
+                <option value="lowpass">低通</option>
+                <option value="highpass">高通</option>
+                <option value="bandpass" selected>带通</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">阈值 (%)</label>
+              <input type="range" min="0" max="100" value="50" class="w-full" id="probe2-threshold" oninput="updateThresholdValue(2, this.value)" />
+              <div class="text-sm text-text-secondary mt-1">当前值: <span id="probe2-threshold-value">50</span>%</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 探头3 -->
+        <div>
+          <h3 class="text-lg font-semibold text-accent-primary mb-3">探头 3</h3>
+          <div class="space-y-3">
+            <div>
+              <label class="block text-sm font-medium mb-2">增益 (dB)</label>
+              <input type="range" min="0" max="80" step="0.5" value="45.5" class="w-full" id="probe3-gain" oninput="updateGainValue(3, this.value)" />
+              <div class="text-sm text-text-secondary mt-1">当前值: <span id="probe3-gain-value">45.5</span> dB</div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">频率 (MHz)</label>
+              <input type="number" min="0.5" max="20" step="0.1" value="5.0" class="input" id="probe3-freq" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">滤波器</label>
+              <select class="select" id="probe3-filter">
+                <option value="lowpass">低通</option>
+                <option value="highpass">高通</option>
+                <option value="bandpass" selected>带通</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">阈值 (%)</label>
+              <input type="range" min="0" max="100" value="50" class="w-full" id="probe3-threshold" oninput="updateThresholdValue(3, this.value)" />
+              <div class="text-sm text-text-secondary mt-1">当前值: <span id="probe3-threshold-value">50</span>%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 闸门和系统参数 -->
+      <div class="space-y-6">
+        <!-- 闸门参数 -->
+        <div class="panel">
+          <h2 class="panel-header">闸门参数</h2>
+          
+          <div class="mb-6">
+            <h3 class="text-lg font-semibold text-accent-primary mb-3">闸门 A</h3>
+            <div class="space-y-3">
+              <div>
+                <label class="block text-sm font-medium mb-2">起始位置 (mm)</label>
+                <input type="number" min="0" max="999" value="0" class="input" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">宽度 (mm)</label>
+                <input type="number" min="1" max="999" value="100" class="input" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">阈值 (%)</label>
+                <input type="number" min="0" max="100" value="60" class="input" />
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h3 class="text-lg font-semibold text-accent-primary mb-3">闸门 B</h3>
+            <div class="space-y-3">
+              <div>
+                <label class="block text-sm font-medium mb-2">起始位置 (mm)</label>
+                <input type="number" min="0" max="999" value="100" class="input" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">宽度 (mm)</label>
+                <input type="number" min="1" max="999" value="100" class="input" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">阈值 (%)</label>
+                <input type="number" min="0" max="100" value="60" class="input" />
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 系统参数 -->
+        <div class="panel">
+          <h2 class="panel-header">系统参数</h2>
+          
+          <div class="space-y-3">
+            <div>
+              <label class="block text-sm font-medium mb-2">采样率 (Hz)</label>
+              <select class="select">
+                <option value="100">100</option>
+                <option value="500">500</option>
+                <option value="1000" selected>1000</option>
+                <option value="2000">2000</option>
+                <option value="5000">5000</option>
+                <option value="10000">10000</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">平均次数</label>
+              <select class="select">
+                <option value="1">1</option>
+                <option value="4">4</option>
+                <option value="8">8</option>
+                <option value="16" selected>16</option>
+                <option value="32">32</option>
+                <option value="64">64</option>
+                <option value="128">128</option>
+                <option value="256">256</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">检波模式</label>
+              <select class="select">
+                <option value="full" selected>全波</option>
+                <option value="half_positive">正半波</option>
+                <option value="half_negative">负半波</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<script>
+  (window as any).updateGainValue = (probe: number, value: string) => {
+    document.getElementById(`probe${probe}-gain-value`)!.textContent = value;
+  };
+  
+  (window as any).updateThresholdValue = (probe: number, value: string) => {
+    document.getElementById(`probe${probe}-threshold-value`)!.textContent = value;
+  };
+  
+  (window as any).loadTemplate = () => {
+    const select = document.getElementById('template-select') as HTMLSelectElement;
+    if (select.value) {
+      const selectedOption = select.options[select.selectedIndex];
+      if (selectedOption) {
+        alert(`加载模板: ${selectedOption.text}`);
+      }
+    }
+  };
+  
+  (window as any).saveAsTemplate = () => {
+    const name = prompt('请输入模板名称:');
+    if (name) {
+      alert(`已保存为模板: ${name}`);
+    }
+  };
+  
+  (window as any).applyParameters = () => {
+    alert('参数已应用到检测系统！');
+    window.location.href = '/';
+  };
+</script>

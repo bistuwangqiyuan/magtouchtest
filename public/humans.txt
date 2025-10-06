@@ -1,0 +1,17 @@
+/* TEAM */
+项目名称: 接触式三探头磁检测软件
+开发团队: AI全栈开发团队
+联系方式: support@magdetection.com
+位置: 中国
+
+/* THANKS */
+技术栈: Astro, React, TypeScript, Supabase, Tailwind CSS
+托管平台: Netlify
+设计灵感: DOPPLER工业检测设备
+
+/* SITE */
+最后更新: 2025/10/05
+语言: 简体中文 / English
+文档标准: HTML5, CSS3
+组件: React, Zustand
+IDE: Cursor, VS Code

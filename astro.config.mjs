@@ -1,14 +1,14 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import netlify from '@astrojs/netlify';
-import tailwindcss from '@tailwindcss/vite';
+import tailwind from '@astrojs/tailwind';
 
 // https://astro.build/config
 export default defineConfig({
   // 站点配置
-  site: 'https://your-domain.com', // 替换为你的实际域名
+  site: 'https://magtouchtest-3578.netlify.app',
   
-  // 输出模式：hybrid允许部分页面使用SSR
+  // 输出模式：static静态站点
   output: 'static',
   
   // Netlify适配器配置
@@ -19,11 +19,14 @@ export default defineConfig({
   // 集成配置
   integrations: [
     react(), // React组件支持
+    tailwind({
+      // 应用默认的基础样式
+      applyBaseStyles: false, // 我们使用自定义的global.css
+    }),
   ],
   
   // Vite配置
   vite: {
-    plugins: [tailwindcss()],
     // 优化依赖
     optimizeDeps: {
       include: [

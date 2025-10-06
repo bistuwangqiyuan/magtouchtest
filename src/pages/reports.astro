@@ -1,0 +1,96 @@
+---
+/**
+ * 报告管理页面
+ */
+
+import MainLayout from '@/layouts/MainLayout.astro';
+---
+
+<MainLayout title="报告管理">
+  <div class="p-6">
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-2xl font-bold">检测报告管理</h1>
+      <button class="btn-primary" onclick="generateBatchReport()">批量生成报告</button>
+    </div>
+    
+    <!-- 报告列表 -->
+    <div class="panel">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>报告编号</th>
+            <th>工件编号</th>
+            <th>检测日期</th>
+            <th>操作员</th>
+            <th>结论</th>
+            <th>生成时间</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="report-list">
+          <tr>
+            <td colspan="7" class="text-center text-text-secondary py-8">
+              加载中...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</MainLayout>
+
+<script>
+  async function loadReports() {
+    const tbody = document.getElementById('report-list');
+    if (!tbody) return;
+    
+    // 演示数据
+    const reports = [
+      {
+        id: 'RPT-2025-001',
+        workpiece_no: 'WP-2025-001',
+        detection_date: '2025-10-05',
+        operator: '李操作员',
+        conclusion: '发现2处缺陷',
+        generated_at: '2025-10-05 15:00:00',
+      },
+      {
+        id: 'RPT-2025-002',
+        workpiece_no: 'WP-2025-002',
+        detection_date: '2025-10-05',
+        operator: '王操作员',
+        conclusion: '检测合格',
+        generated_at: '2025-10-05 14:00:00',
+      },
+    ];
+    
+    tbody.innerHTML = reports.map(r => `
+      <tr>
+        <td class="font-semibold text-accent-primary">${r.id}</td>
+        <td>${r.workpiece_no}</td>
+        <td>${r.detection_date}</td>
+        <td>${r.operator}</td>
+        <td>${r.conclusion}</td>
+        <td>${r.generated_at}</td>
+        <td>
+          <button class="btn-sm btn-primary mr-2" onclick="downloadPDF('${r.id}')">下载PDF</button>
+          <button class="btn-sm btn-secondary" onclick="viewReport('${r.id}')">预览</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+  
+  (window as any).generateBatchReport = () => {
+    alert('批量报告生成功能（演示）');
+  };
+  
+  (window as any).downloadPDF = (id: string) => {
+    alert(`下载PDF报告: ${id}`);
+  };
+  
+  (window as any).viewReport = (id: string) => {
+    alert(`预览报告: ${id}`);
+  };
+  
+  document.addEventListener('DOMContentLoaded', loadReports);
+</script>

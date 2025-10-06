@@ -1,0 +1,156 @@
+---
+/**
+ * 历史记录页面
+ */
+
+import MainLayout from '@/layouts/MainLayout.astro';
+---
+
+<MainLayout title="历史记录">
+  <div class="p-6">
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-2xl font-bold">检测历史记录</h1>
+      <div class="flex gap-4">
+        <input type="date" class="input" id="date-filter" />
+        <button class="btn-secondary" onclick="exportData()">导出数据</button>
+      </div>
+    </div>
+    
+    <!-- 统计卡片 -->
+    <div class="grid grid-cols-4 gap-4 mb-6">
+      <div class="card">
+        <div class="text-sm text-text-secondary mb-1">总检测次数</div>
+        <div class="text-3xl font-bold text-accent-primary">156</div>
+      </div>
+      <div class="card">
+        <div class="text-sm text-text-secondary mb-1">合格率</div>
+        <div class="text-3xl font-bold text-accent-success">94.2%</div>
+      </div>
+      <div class="card">
+        <div class="text-sm text-text-secondary mb-1">发现缺陷</div>
+        <div class="text-3xl font-bold text-accent-warning">23</div>
+      </div>
+      <div class="card">
+        <div class="text-sm text-text-secondary mb-1">今日检测</div>
+        <div class="text-3xl font-bold text-accent-primary">8</div>
+      </div>
+    </div>
+    
+    <!-- 检测记录列表 -->
+    <div class="panel">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>检测日期</th>
+            <th>工件编号</th>
+            <th>操作员</th>
+            <th>缺陷数</th>
+            <th>结论</th>
+            <th>状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="record-list">
+          <tr>
+            <td colspan="7" class="text-center text-text-secondary py-8">
+              加载中...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</MainLayout>
+
+<script>
+  (window as any).exportData = () => {
+    alert('导出Excel功能（演示）');
+  };
+  
+  async function loadRecords() {
+    const tbody = document.getElementById('record-list');
+    if (!tbody) return;
+    
+    // 演示数据
+    const records = [
+      {
+        id: '1',
+        detection_date: '2025-10-05 14:30:00',
+        workpiece_no: 'WP-2025-001',
+        operator: '李操作员',
+        defect_count: 2,
+        conclusion: '发现2处缺陷，建议修补',
+        status: 'completed',
+      },
+      {
+        id: '2',
+        detection_date: '2025-10-05 13:15:00',
+        workpiece_no: 'WP-2025-002',
+        operator: '王操作员',
+        defect_count: 0,
+        conclusion: '未发现明显缺陷，合格',
+        status: 'approved',
+      },
+      {
+        id: '3',
+        detection_date: '2025-10-05 11:00:00',
+        workpiece_no: 'WP-2025-003',
+        operator: '李操作员',
+        defect_count: 1,
+        conclusion: '发现1处轻微气孔',
+        status: 'completed',
+      },
+      {
+        id: '4',
+        detection_date: '2025-10-04 16:45:00',
+        workpiece_no: 'WP-2025-004',
+        operator: '张工程师',
+        defect_count: 0,
+        conclusion: '检测合格',
+        status: 'approved',
+      },
+      {
+        id: '5',
+        detection_date: '2025-10-04 14:20:00',
+        workpiece_no: 'WP-2025-005',
+        operator: '李操作员',
+        defect_count: 3,
+        conclusion: '发现多处裂纹，需返修',
+        status: 'completed',
+      },
+    ];
+    
+    tbody.innerHTML = records.map(r => `
+      <tr>
+        <td>${r.detection_date}</td>
+        <td class="font-semibold text-accent-primary">${r.workpiece_no}</td>
+        <td>${r.operator}</td>
+        <td>
+          <span class="badge ${r.defect_count > 0 ? 'badge-warning' : 'badge-success'}">
+            ${r.defect_count}处
+          </span>
+        </td>
+        <td>${r.conclusion}</td>
+        <td>
+          <span class="badge ${r.status === 'approved' ? 'badge-success' : 'badge-primary'}">
+            ${r.status === 'approved' ? '已审批' : '已完成'}
+          </span>
+        </td>
+        <td>
+          <button class="btn-sm btn-secondary mr-2" onclick="viewRecord('${r.id}')">查看</button>
+          <button class="btn-sm btn-secondary" onclick="generateReport('${r.id}')">报告</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+  
+  (window as any).viewRecord = (id: string) => {
+    alert(`查看记录: ${id}`);
+  };
+  
+  (window as any).generateReport = (id: string) => {
+    alert(`生成报告: ${id}`);
+  };
+  
+  document.addEventListener('DOMContentLoaded', loadRecords);
+</script>
