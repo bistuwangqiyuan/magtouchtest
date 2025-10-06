@@ -188,6 +188,12 @@ import MainLayout from '@/layouts/MainLayout.astro';
       config.timeScale = 1.0;
       drawWaveform();
     });
+    
+    // 🎯 自动开始检测 - 页面加载后延迟500ms自动启动
+    setTimeout(() => {
+      (window as any).startDetection();
+      console.log('✅ 自动检测已启动');
+    }, 500);
   });
   
   // 全局函数供布局调用
