@@ -4,9 +4,17 @@
  */
 
 import MainLayout from '@/layouts/MainLayout.astro';
+
+const title = '历史记录 - 完整检测数据追溯与统计分析 | 磁检测系统';
+const description = '完善的检测历史记录查询系统。支持按日期、工件、操作员等多维度查询。实时统计总检测次数、合格率、缺陷数量等关键指标。提供数据导出功能，支持Excel格式，便于质量追溯和数据分析。';
+const keywords = '历史记录,检测记录,数据查询,统计分析,合格率,缺陷统计,数据导出,质量追溯,检测历史,数据管理';
 ---
 
-<MainLayout title="历史记录">
+<MainLayout 
+  title={title}
+  description={description}
+  keywords={keywords}
+>
   <div class="p-6">
     <div class="flex items-center justify-between mb-6">
       <h1 class="text-2xl font-bold">检测历史记录</h1>

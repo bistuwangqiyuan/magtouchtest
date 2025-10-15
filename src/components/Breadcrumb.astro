@@ -1,0 +1,85 @@
+---
+/**
+ * 面包屑导航组件
+ * 提供清晰的页面层级结构，增强SEO和用户体验
+ */
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+// 获取当前路径
+const currentPath = Astro.url.pathname;
+const pathSegments = currentPath.split('/').filter(Boolean);
+
+// 路径名称映射
+const pathNames: Record<string, string> = {
+  'workpiece': '工件管理',
+  'parameters': '参数配置',
+  'history': '历史记录',
+  'reports': '报告管理',
+};
+
+// 构建面包屑项
+interface BreadcrumbItem {
+  name: string;
+  href: string;
+  current: boolean;
+}
+
+const items: BreadcrumbItem[] = [
+  { name: '首页', href: '/', current: pathSegments.length === 0 },
+];
+
+pathSegments.forEach((segment, index) => {
+  const href = '/' + pathSegments.slice(0, index + 1).join('/');
+  const current = index === pathSegments.length - 1;
+  items.push({
+    name: pathNames[segment] || segment,
+    href,
+    current,
+  });
+});
+---
+
+<nav class={`breadcrumb ${className || ''}`} aria-label="面包屑导航" itemscope itemtype="https://schema.org/BreadcrumbList">
+  <ol class="flex items-center gap-2 text-sm">
+    {items.map((item, index) => (
+      <li 
+        class="flex items-center gap-2"
+        itemprop="itemListElement" 
+        itemscope 
+        itemtype="https://schema.org/ListItem"
+      >
+        {!item.current ? (
+          <a 
+            href={item.href} 
+            class="text-text-secondary hover:text-accent-primary transition-colors"
+            itemprop="item"
+          >
+            <span itemprop="name">{item.name}</span>
+          </a>
+        ) : (
+          <span class="text-text-primary font-semibold" itemprop="name">
+            {item.name}
+          </span>
+        )}
+        <meta itemprop="position" content={String(index + 1)} />
+        {!item.current && index < items.length - 1 && (
+          <span class="text-text-secondary" aria-hidden="true">/</span>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<style>
+  .breadcrumb {
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid var(--color-border);
+  }
+</style>
+

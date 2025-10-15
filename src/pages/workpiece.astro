@@ -4,9 +4,17 @@
  */
 
 import MainLayout from '@/layouts/MainLayout.astro';
+
+const title = '工件管理 - 批量管理检测工件信息 | 磁检测系统';
+const description = '专业的工件信息管理系统，支持批量录入、编辑、查询工件信息。包括工件编号、材质、尺寸、检测标准等完整参数管理。适用于不锈钢、碳钢、铝合金等各类铁磁性材料的检测工件管理。';
+const keywords = '工件管理,检测工件,材质管理,工件信息,批量管理,工件编号,检测标准,GB/T 15822-2019,ASTM E1444-16';
 ---
 
-<MainLayout title="工件管理">
+<MainLayout 
+  title={title}
+  description={description}
+  keywords={keywords}
+>
   <div class="p-6">
     <div class="flex items-center justify-between mb-6">
       <h1 class="text-2xl font-bold">工件管理</h1>

@@ -1,4 +1,5 @@
 # robots.txt for 磁检测系统
+# 接触式三探头磁检测软件 - 专业工业无损检测系统
 
 User-agent: *
 Allow: /
@@ -9,8 +10,7 @@ Disallow: /_astro/
 Disallow: /*.json$
 
 # Sitemap位置
-Sitemap: https://magtouchtest-3578.netlify.app/sitemap.xml
-Sitemap: https://magtouchtest-3578.netlify.app/sitemap-index.xml
+Sitemap: https://magtouchtest.netlify.app/sitemap.xml
 
 # 爬虫速率限制（可选）
 Crawl-delay: 1
@@ -18,10 +18,23 @@ Crawl-delay: 1
 # 特定搜索引擎优化
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 0.5
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Baiduspider
 Allow: /
 Crawl-delay: 2
+
+User-agent: 360Spider
+Allow: /
+Crawl-delay: 2
+
+User-agent: Sogou web spider
+Allow: /
+Crawl-delay: 2
+
+# 主机信息
+Host: https://magtouchtest.netlify.app

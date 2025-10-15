@@ -4,9 +4,17 @@
  */
 
 import MainLayout from '@/layouts/MainLayout.astro';
+
+const title = '报告管理 - 专业PDF检测报告生成与管理 | 磁检测系统';
+const description = '智能检测报告生成系统。一键生成符合国际标准的PDF检测报告，包含波形截图、数据表格、缺陷分析、检测结论等完整信息。支持批量报告生成、报告预览、下载等功能。报告格式完全符合GB/T、ASTM、ISO标准要求。';
+const keywords = '检测报告,PDF报告,报告生成,批量报告,报告管理,报告下载,检测结论,波形报告,标准报告,质量报告';
 ---
 
-<MainLayout title="报告管理">
+<MainLayout 
+  title={title}
+  description={description}
+  keywords={keywords}
+>
   <div class="p-6">
     <div class="flex items-center justify-between mb-6">
       <h1 class="text-2xl font-bold">检测报告管理</h1>

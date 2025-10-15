@@ -5,9 +5,17 @@
  */
 
 import MainLayout from '@/layouts/MainLayout.astro';
+
+const title = '实时三探头磁粉检测 - 接触式三探头磁检测软件';
+const description = '专业的工业级磁粉检测系统主检测界面，实时显示三探头波形数据，精确监测工件表面缺陷。支持在线状态监控、参数调节、波形分析等功能。采用30fps+高性能Canvas渲染，延迟小于100ms。';
+const keywords = '磁粉检测,三探头检测,实时波形显示,缺陷检测,NDT检测,无损检测系统,工业检测软件,探头监控,实时数据采集';
 ---
 
-<MainLayout title="主检测界面">
+<MainLayout 
+  title={title}
+  description={description}
+  keywords={keywords}
+>
   <div class="h-full flex flex-col p-6">
     <!-- 波形显示区 -->
     <div class="flex-1 panel mb-4">

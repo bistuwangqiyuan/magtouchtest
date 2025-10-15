@@ -4,6 +4,7 @@
  * 提供全局布局结构
  */
 import SEO from '../components/SEO.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -80,6 +81,9 @@ const fullTitle = title.includes('磁检测') ? title : `${title} - 接触式三
           </div>
         </div>
       </header>
+      
+      <!-- 面包屑导航 -->
+      <Breadcrumb />
       
       <!-- 主内容区 -->
       <main class="flex-1 flex overflow-hidden" role="main" itemprop="mainContentOfPage">

@@ -4,9 +4,17 @@
  */
 
 import MainLayout from '@/layouts/MainLayout.astro';
+
+const title = '参数配置 - 专业检测参数设置 | 磁检测系统';
+const description = '灵活的三探头检测参数配置系统。支持增益(0-80dB)、频率(0.5-20MHz)、滤波器、闸门等精确参数设置。提供参数模板管理功能，适配不同材质的检测需求。实时参数调节，确保最佳检测效果。';
+const keywords = '参数配置,探头参数,增益设置,频率调节,滤波器,闸门参数,参数模板,检测参数,DAC曲线,AVG曲线';
 ---
 
-<MainLayout title="参数配置">
+<MainLayout 
+  title={title}
+  description={description}
+  keywords={keywords}
+>
   <div class="p-6">
     <div class="flex items-center justify-between mb-6">
       <h1 class="text-2xl font-bold">检测参数配置</h1>

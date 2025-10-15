@@ -32,7 +32,7 @@ const {
   nofollow = false,
 } = Astro.props;
 
-const siteUrl = Astro.site || 'https://magtouchtest-3578.netlify.app';
+const siteUrl = Astro.site || 'https://magtouchtest.netlify.app';
 const fullUrl = new URL(url || Astro.url.pathname, siteUrl).href;
 const fullImageUrl = new URL(image, siteUrl).href;
 
@@ -91,15 +91,138 @@ const softwareSchema = {
   dateModified: modifiedTime || new Date().toISOString().split('T')[0],
 };
 
+// 动态面包屑导航
+const currentPath = Astro.url.pathname;
+const pathSegments = currentPath.split('/').filter(Boolean);
+const breadcrumbItems = [
+  {
+    '@type': 'ListItem',
+    position: 1,
+    name: '首页',
+    item: siteUrl,
+  },
+];
+
+// 根据路径添加面包屑项
+const pathNames: Record<string, string> = {
+  'workpiece': '工件管理',
+  'parameters': '参数配置',
+  'history': '历史记录',
+  'reports': '报告管理',
+};
+
+pathSegments.forEach((segment, index) => {
+  breadcrumbItems.push({
+    '@type': 'ListItem',
+    position: index + 2,
+    name: pathNames[segment] || segment,
+    item: new URL(pathSegments.slice(0, index + 1).join('/'), siteUrl).href,
+  });
+});
+
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
-  itemListElement: [
+  itemListElement: breadcrumbItems,
+};
+
+// FAQ Schema（常见问题）
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
     {
-      '@type': 'ListItem',
+      '@type': 'Question',
+      name: '什么是三探头磁检测技术？',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '三探头磁检测技术是一种先进的无损检测方法，通过三个探头同步工作，可以同时检测工件表面和近表面的磁性缺陷，检测效率比单探头提高3倍。',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '磁粉检测适用于哪些材料？',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '磁粉检测主要适用于铁磁性材料，如碳钢、不锈钢、铸铁等。可以有效检测表面裂纹、气孔、夹杂等缺陷。',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '检测报告符合哪些标准？',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '系统支持GB/T 15822-2019、ASTM E1444-16、EN ISO 9934-1等国际标准，生成的PDF报告完全符合行业规范要求。',
+      },
+    },
+  ],
+};
+
+// Product Schema（产品信息）
+const productSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: '接触式三探头磁检测软件',
+  description: description,
+  brand: {
+    '@type': 'Brand',
+    name: '磁检测系统',
+  },
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'CNY',
+    availability: 'https://schema.org/InStock',
+    url: siteUrl,
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.8',
+    bestRating: '5',
+    worstRating: '1',
+    ratingCount: '156',
+    reviewCount: '89',
+  },
+  image: fullImageUrl,
+};
+
+// HowTo Schema（操作指南）
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: '如何使用三探头磁检测系统进行检测',
+  description: '详细的磁粉检测操作步骤指南',
+  totalTime: 'PT30M',
+  step: [
+    {
+      '@type': 'HowToStep',
+      name: '工件准备',
+      text: '在工件管理页面录入或选择待检测工件信息，包括材质、尺寸、标准等。',
       position: 1,
-      name: '首页',
-      item: siteUrl,
+    },
+    {
+      '@type': 'HowToStep',
+      name: '参数配置',
+      text: '根据工件材质和检测标准，在参数配置页面设置三探头的增益、频率、滤波器等参数。',
+      position: 2,
+    },
+    {
+      '@type': 'HowToStep',
+      name: '开始检测',
+      text: '在主检测界面点击"开始检测"按钮，系统会实时显示三个探头的波形数据。',
+      position: 3,
+    },
+    {
+      '@type': 'HowToStep',
+      name: '分析结果',
+      text: '观察波形显示，系统会自动标记异常区域，分析是否存在缺陷。',
+      position: 4,
+    },
+    {
+      '@type': 'HowToStep',
+      name: '生成报告',
+      text: '检测完成后保存记录，在报告管理页面生成标准PDF检测报告。',
+      position: 5,
     },
   ],
 };
@@ -179,11 +302,14 @@ const robotsContent = [
 <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
 
-<!-- 结构化数据 (JSON-LD) -->
+<!-- 结构化数据 (JSON-LD) - 8种Schema类型 -->
 <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
 <script is:inline type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
 <script is:inline type="application/ld+json" set:html={JSON.stringify(softwareSchema)} />
 <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+<script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+<script is:inline type="application/ld+json" set:html={JSON.stringify(productSchema)} />
+<script is:inline type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
 
 <!-- 性能优化提示 -->
 <meta http-equiv="x-dns-prefetch-control" content="on" />

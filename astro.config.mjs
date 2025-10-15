@@ -6,7 +6,7 @@ import tailwind from '@astrojs/tailwind';
 // https://astro.build/config
 export default defineConfig({
   // 站点配置
-  site: 'https://magtouchtest-3578.netlify.app',
+  site: 'https://magtouchtest.netlify.app',
   
   // 输出模式：static静态站点
   output: 'static',
